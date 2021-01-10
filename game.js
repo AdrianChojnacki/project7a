@@ -1,91 +1,85 @@
-// Function objects
-const gameSummary = {
+// Game statistics
+const gameStats = {
+  playerHand: null,
+  aiHand: null,
   games: 0,
   wins: 0,
   losses: 0,
   draws: 0,
 };
 
-const game = {
-  playerHand: null,
-  aiHand: null,
+// Hands selector
+const hands = [...document.querySelectorAll(`.select img`)];
+
+// Hand selection function
+const handSelection = (e) => {
+  hands.forEach((hand) => (hand.style.boxShadow = ""));
+  e.target.style.boxShadow = "0 0 0 4px yellow";
+  gameStats.playerHand = e.target.dataset.option;
 };
 
-// Hands selector
-const hands = [...document.querySelectorAll(".select img")];
-
-// Selection function
-function handSelection() {
-  game.playerHand = this.dataset.option;
-  hands.forEach((hand) => (hand.style.boxShadow = ""));
-  this.style.boxShadow = "0 0 0 4px yellow";
-}
-
-// Selection listener
+// Hand selection listener
 hands.forEach((hand) => hand.addEventListener(`click`, handSelection));
 
-// AI choice function
-function aiChoice() {
-  return hands[Math.floor(Math.random() * 3)].dataset.option;
-}
-
-// Check result function
-function checkResult(player, ai) {
-  if (player === ai) {
-    return "draw";
-  } else if (
-    (player === "paper" && ai === "rock") ||
-    (player === "rock" && ai === "scissors") ||
-    (player === "scissors" && ai === "paper")
-  ) {
-    return "win";
-  } else {
-    return "loss";
-  }
-}
+// AI selection function
+const aiSelection = () => {
+  gameStats.aiHand = hands[Math.floor(Math.random() * 3)].dataset.option;
+};
 
 // Publish result function
-function publishResult(player, ai, result) {
-  document.querySelector(`[data-summary="your-choice"]`).textContent = player;
-  document.querySelector(`[data-summary="ai-choice"]`).textContent = ai;
+const publishResult = () => {
+  gameStats.games++;
 
-  document.querySelector(`p.numbers span`).textContent = ++gameSummary.games;
+  document.querySelector(`[data-summary="your-choice"]`).textContent = gameStats.playerHand;
+  document.querySelector(`[data-summary="ai-choice"]`).textContent = gameStats.aiHand;
 
-  if (result === "win") {
-    document.querySelector(`p.wins span`).textContent = ++gameSummary.wins;
-    document.querySelector(`[data-summary="who-win"]`).textContent = "WYGRAŁEŚ!";
-    document.querySelector(`[data-summary="who-win"]`).style.color = "green";
-  } else if (result === "loss") {
-    document.querySelector(`p.losses span`).textContent = ++gameSummary.losses;
-    document.querySelector(`[data-summary="who-win"]`).textContent = "PRZEGRANA...";
-    document.querySelector(`[data-summary="who-win"]`).style.color = "red";
-  } else {
-    document.querySelector(`p.draws span`).textContent = ++gameSummary.draws;
+  if (gameStats.playerHand === gameStats.aiHand) {
+    gameStats.draws++;
+
     document.querySelector(`[data-summary="who-win"]`).textContent = "REMIS";
     document.querySelector(`[data-summary="who-win"]`).style.color = "gray";
+  } else if (
+    (gameStats.playerHand === "paper" && gameStats.aiHand === "rock") ||
+    (gameStats.playerHand === "rock" && gameStats.aiHand === "scissors") ||
+    (gameStats.playerHand === "scissors" && gameStats.aiHand === "paper")
+  ) {
+    gameStats.wins++;
+
+    document.querySelector(`[data-summary="who-win"]`).textContent = "WYGRANA";
+    document.querySelector(`[data-summary="who-win"]`).style.color = "green";
+  } else {
+    gameStats.losses++;
+
+    document.querySelector(`[data-summary="who-win"]`).textContent = "Przegrana";
+    document.querySelector(`[data-summary="who-win"]`).style.color = "red";
   }
-}
+};
 
-// End function
-function endGame() {
-  document.querySelector(`[data-option="${game.playerHand}"]`).style.boxShadow = "";
-  game.playerHand = null;
-}
+// Update summary function
+const updateSummary = () => {
+  document.querySelector(`.numbers span`).textContent = gameStats.games;
+  document.querySelector(`.wins span`).textContent = gameStats.wins;
+  document.querySelector(`.losses span`).textContent = gameStats.losses;
+  document.querySelector(`.draws span`).textContent = gameStats.draws;
+};
 
-// Main Function
-function startGame() {
-  if (!game.playerHand) {
-    return alert("Wybierz dłoń!");
+// End game function
+const endGame = () => {
+  hands.forEach((hand) => (hand.style.boxShadow = ""));
+  gameStats.playerHand = null;
+};
+
+// Main function
+const letsPlay = () => {
+  if (!gameStats.playerHand) {
+    alert("Wybierz dłoń");
+  } else {
+    aiSelection();
+    publishResult();
+    updateSummary();
+    endGame();
   }
-
-  game.aiHand = aiChoice();
-
-  const gameResult = checkResult(game.playerHand, game.aiHand);
-
-  publishResult(game.playerHand, game.aiHand, gameResult);
-
-  endGame();
-}
+};
 
 // Main listener
-document.querySelector(`.start`).addEventListener("click", startGame);
+document.querySelector(`.start`).addEventListener(`click`, letsPlay);
