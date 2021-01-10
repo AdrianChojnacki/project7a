@@ -11,13 +11,12 @@ const game = {
   aiHand: null,
 };
 
-// Hands options selector
+// Hands selector
 const hands = [...document.querySelectorAll(".select img")];
 
 // Selection function
 function handSelection() {
   game.playerHand = this.dataset.option;
-  console.log(game.playerHand);
   hands.forEach((hand) => (hand.style.boxShadow = ""));
   this.style.boxShadow = "0 0 0 4px yellow";
 }
@@ -67,6 +66,12 @@ function publishResult(player, ai, result) {
   }
 }
 
+// End function
+function endGame() {
+  document.querySelector(`[data-option="${game.playerHand}"]`).style.boxShadow = "";
+  game.playerHand = null;
+}
+
 // Main Function
 function startGame() {
   if (!game.playerHand) {
@@ -78,6 +83,8 @@ function startGame() {
   const gameResult = checkResult(game.playerHand, game.aiHand);
 
   publishResult(game.playerHand, game.aiHand, gameResult);
+
+  endGame();
 }
 
 // Main listener
