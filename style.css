@@ -6,8 +6,8 @@
 }
 
 h1 {
-  text-align: center;
   margin: 20px 0;
+  text-align: center;
 }
 
 h3 {
@@ -22,9 +22,9 @@ h3 {
 .panel-right {
   display: inline-block;
   width: 48%;
-  overflow: hidden;
   margin: 40px auto 0;
   text-align: center;
+  overflow: hidden;
 }
 
 .panel-left p {
@@ -45,29 +45,30 @@ h2 {
 }
 
 .select {
-  overflow: hidden;
-  text-align: center;
-  margin: 0 auto;
   max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  overflow: hidden;
 }
 
 .select img {
+  display: inline-block;
   width: 200px;
   margin: 20px;
-  display: inline-block;
+  cursor: pointer;
 }
 
 button {
   display: block;
-  padding: 5px 20px;
-  border: 2px solid black;
-  text-transform: uppercase;
-  background-color: #fff;
-  font-weight: bold;
   margin: 10px auto;
-  transition: 0.3s;
+  padding: 5px 20px;
+  background-color: #fff;
+  border: 2px solid black;
   font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 button:hover {
