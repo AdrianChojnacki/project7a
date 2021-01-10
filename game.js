@@ -30,6 +30,21 @@ function aiChoice() {
   return hands[Math.floor(Math.random() * 3)].dataset.option;
 }
 
+// Check result function
+function checkResult(player, ai) {
+  if (player === ai) {
+    return "draw";
+  } else if (
+    (player === "paper" && ai === "rock") ||
+    (player === "rock" && ai === "scissors") ||
+    (player === "scissors" && ai === "paper")
+  ) {
+    return "win";
+  } else {
+    return "loss";
+  }
+}
+
 // Main Function
 function startGame() {
   if (!game.playerHand) {
@@ -37,6 +52,9 @@ function startGame() {
   }
 
   game.aiHand = aiChoice();
+
+  const gameResult = checkResult(game.playerHand, game.aiHand);
+  console.log(gameResult);
 }
 
 // Main listener
