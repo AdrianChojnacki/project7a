@@ -45,6 +45,28 @@ function checkResult(player, ai) {
   }
 }
 
+// Publish result function
+function publishResult(player, ai, result) {
+  document.querySelector(`[data-summary="your-choice"]`).textContent = player;
+  document.querySelector(`[data-summary="ai-choice"]`).textContent = ai;
+
+  document.querySelector(`p.numbers span`).textContent = ++gameSummary.games;
+
+  if (result === "win") {
+    document.querySelector(`p.wins span`).textContent = ++gameSummary.wins;
+    document.querySelector(`[data-summary="who-win"]`).textContent = "WYGRAŁEŚ!";
+    document.querySelector(`[data-summary="who-win"]`).style.color = "green";
+  } else if (result === "loss") {
+    document.querySelector(`p.losses span`).textContent = ++gameSummary.losses;
+    document.querySelector(`[data-summary="who-win"]`).textContent = "PRZEGRANA...";
+    document.querySelector(`[data-summary="who-win"]`).style.color = "red";
+  } else {
+    document.querySelector(`p.draws span`).textContent = ++gameSummary.draws;
+    document.querySelector(`[data-summary="who-win"]`).textContent = "REMIS";
+    document.querySelector(`[data-summary="who-win"]`).style.color = "gray";
+  }
+}
+
 // Main Function
 function startGame() {
   if (!game.playerHand) {
@@ -54,7 +76,8 @@ function startGame() {
   game.aiHand = aiChoice();
 
   const gameResult = checkResult(game.playerHand, game.aiHand);
-  console.log(gameResult);
+
+  publishResult(game.playerHand, game.aiHand, gameResult);
 }
 
 // Main listener
